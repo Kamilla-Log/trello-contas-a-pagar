@@ -1,0 +1,66 @@
+/* ── Botão excluir card ─────────────────────────────────────────────────── */
+.task { position: relative; }
+
+.task .delete {
+  position: absolute;
+  top: 8px;
+  right: 30px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  opacity: 0;
+  transition: opacity .15s;
+  padding: 2px 4px;
+  border-radius: 4px;
+  color: #EF4444;
+}
+
+.task:hover .delete {
+  opacity: 1;
+}
+
+.task .delete:hover {
+  background: #FEE2E2;
+}
+
+/* ── Drag & Drop ─────────────────────────────────────────────────────────── */
+.task[draggable="true"] {
+  cursor: grab;
+}
+
+.task[draggable="true"]:active {
+  cursor: grabbing;
+}
+
+.column.drag-over {
+  background: #F3EEFF;
+  border: 2px dashed #6613D0;
+  border-radius: 12px;
+}
+
+/* ── Menu lateral ativo ─────────────────────────────────────────────────── */
+.sidebar nav a {
+  cursor: pointer;
+}
+
+.sidebar nav a.active {
+  color: #6613D0;
+  font-weight: 600;
+  border-left: 3px solid #6613D0;
+  padding-left: 13px;
+  background: rgba(102,19,208,0.06);
+  border-radius: 0 8px 8px 0;
+}
+
+/* ── Sections de view (Responsáveis, Relatórios, Configurações) ─────────── */
+.view-section.hidden {
+  display: none;
+}
+
+.view-section {
+  padding: 32px 0;
+  color: #64748b;
+  font-size: 14px;
+  text-align: center;
+}
