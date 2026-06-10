@@ -1,118 +1,395 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Logcomex Finance Board</title>
-  <link rel="stylesheet" href="./style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Proposta CISa Santander | Logcomex</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --lc-purple: #6415d6;
+  --lc-purple-dark: #2b0757;
+  --lc-orange: #ff8a00;
+  --lc-cyan: #22c7d8;
+  --lc-border: #eadcfb;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: linear-gradient(#fbf9ff 0%, #fff 38%, #fbf9ff 100%); color: #261043; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+.accent-line { background: linear-gradient(90deg, var(--lc-purple), var(--lc-orange), var(--lc-cyan)); height: 6px; }
+
+.hero { background: linear-gradient(135deg, var(--lc-purple-dark), var(--lc-purple) 58%, #8c2cff); color: #fff; position: relative; overflow: hidden; }
+.hero::before { content: ""; opacity: .86; background: linear-gradient(135deg, transparent 0 42%, #ff8a00f2 42.2% 48%, transparent 48.2%), radial-gradient(circle at 88% 18%, #ff8a008c, transparent 26%), radial-gradient(circle at 18% 80%, #22c7d84d, transparent 30%); position: absolute; inset: 0; pointer-events: none; }
+.hero-bg { opacity: .16; background: radial-gradient(circle at 20% 20%, #fff 0, transparent 24%), radial-gradient(circle at 80% 30%, #fff 0, transparent 28%); position: absolute; inset: 0; pointer-events: none; }
+.hero-content { max-width: 1120px; margin: 0 auto; padding: 88px 24px 104px; position: relative; }
+.brand { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+.brand-mark { background: #fff; border-radius: 12px; width: 44px; height: 44px; position: relative; box-shadow: 0 18px 42px #2b07573d; flex-shrink: 0; }
+.brand-mark::before { content: ""; background: var(--lc-orange); clip-path: polygon(20% 0, 100% 0, 100% 78%, 0 100%, 0 45%); width: 22px; height: 22px; position: absolute; top: 4px; right: 4px; }
+.brand-mark::after { content: ""; background: var(--lc-purple); clip-path: polygon(0 30%, 35% 0, 100% 0, 100% 70%, 65% 100%, 0 100%); width: 22px; height: 22px; position: absolute; bottom: 8px; left: 8px; }
+.brand-name { letter-spacing: -.04em; color: #fff; font-size: 22px; font-weight: 800; }
+.pill { backdrop-filter: blur(8px); background: #ffffff24; border: 1px solid #ffffff3d; border-radius: 999px; margin-bottom: 22px; padding: 10px 16px; font-size: 14px; display: inline-block; }
+.hero h1 { letter-spacing: -.05em; max-width: 880px; margin: 0 0 24px; font-size: clamp(38px, 6vw, 72px); font-weight: 800; line-height: 1.02; }
+.hero h1 span { color: var(--lc-orange); }
+.hero p { color: #f5efff; max-width: 760px; font-size: 19px; line-height: 1.75; }
+.hero small { color: #e9ddff; margin-top: 24px; display: block; }
+
+.section { max-width: 1120px; margin: 0 auto; padding: 54px 24px; }
+.eyebrow { text-transform: uppercase; letter-spacing: .22em; color: var(--lc-purple); margin: 0 0 8px; font-size: 13px; font-weight: 800; }
+.section h2 { letter-spacing: -.04em; color: #261043; margin: 0 0 28px; font-size: clamp(28px, 4vw, 42px); line-height: 1.1; }
+
+.card { border: 1px solid var(--lc-border); background: #fffffff5; border-radius: 26px; padding: 24px; box-shadow: 0 14px 38px #6415d614; }
+.card h3 { color: #261043; display: flex; align-items: center; gap: 10px; margin: 0 0 18px; font-size: 18px; }
+.highlight { background: linear-gradient(#fff, #f7f1ff); border-color: #d9c4ff; }
+
+.metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.metric { position: relative; overflow: hidden; }
+.metric::before { content: ""; background: linear-gradient(90deg, var(--lc-purple), var(--lc-orange)); height: 5px; position: absolute; inset: 0 0 auto; }
+.metric strong { color: var(--lc-purple-dark); font-size: 36px; display: block; padding-top: 12px; }
+.metric span { color: #3b2259; margin-top: 4px; font-weight: 700; display: block; }
+.metric p { color: #6d5a84; margin: 8px 0 0; font-size: 14px; }
+
+.grid { display: grid; gap: 20px; }
+.two { grid-template-columns: 1fr 1fr; }
+
+.table-wrap { border: 1px solid var(--lc-border); background: #fff; border-radius: 26px; overflow: auto; box-shadow: 0 14px 38px #6415d614; }
+table { border-collapse: collapse; width: 100%; min-width: 700px; font-size: 14px; }
+th { background: linear-gradient(90deg, var(--lc-purple-dark), var(--lc-purple)); text-align: left; color: #fff; padding: 16px; }
+td { vertical-align: top; border-top: 1px solid #f0e5ff; padding: 14px 16px; color: #3b2259; }
+tbody tr:nth-child(even) { background: #fcf9ff; }
+
+.badge { white-space: nowrap; border-radius: 999px; padding: 4px 11px; font-size: 12px; font-weight: 700; display: inline-block; }
+.badge-red { color: #b42318; background: #fff1f1; border: 1px solid #ffd0d0; }
+.badge-orange { color: #b45309; background: #fff4e8; border: 1px solid #ffc98b; }
+.badge-yellow { color: #a85600; background: #fff7ed; border: 1px solid #ffd29b; }
+.badge-green { color: #067a4b; background: #edfdf7; border: 1px solid #b6f3d7; }
+
+/* PERGUNTAS */
+.qa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.qa-item { display: flex; gap: 14px; align-items: flex-start; padding: 18px; border-radius: 16px; border: 1px solid; }
+.qa-item.ok { background: #f0fdf6; border-color: #b6f3d7; }
+.qa-item.pending { background: #fff7ed; border-color: #ffd29b; }
+.qa-item.info { background: #f5f3ff; border-color: #ddd6fe; }
+.qa-icon { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; font-weight: 800; margin-top: 1px; }
+.ok .qa-icon { background: #dcfce7; color: #16a34a; }
+.pending .qa-icon { background: #fef3c7; color: #d97706; }
+.info .qa-icon { background: #ede9fe; color: #7c3aed; }
+.qa-question { font-size: 12px; color: #6d5a84; line-height: 1.5; margin: 0 0 6px; font-weight: 500; }
+.qa-answer { font-size: 13px; color: #1a0a2e; font-weight: 600; line-height: 1.55; }
+.qa-note { font-size: 12px; color: #5e4a77; margin-top: 5px; font-style: italic; line-height: 1.4; }
+
+.steps { display: grid; gap: 14px; }
+.step { display: flex; align-items: flex-start; gap: 18px; }
+.num { background: linear-gradient(135deg, var(--lc-purple), #8d35ff); color: #fff; border-radius: 14px; flex-shrink: 0; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 16px; box-shadow: 0 8px 20px #6415d638; }
+.step h3 { margin: 0 0 4px; font-size: 15px; color: #261043; }
+.step p { color: #6d5a84; margin: 0; font-size: 13px; line-height: 1.55; }
+
+.install-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+.install-card { background: #faf8ff; border: 1px solid var(--lc-border); border-radius: 16px; padding: 18px; }
+.install-card h4 { font-size: 14px; color: var(--lc-purple); margin: 0 0 10px; display: flex; align-items: center; gap: 8px; font-weight: 700; }
+.install-card ul { padding-left: 18px; }
+.install-card li { font-size: 13px; color: #5e4a77; line-height: 1.7; }
+
+.dirs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 20px; }
+.dir-item { background: #fff; border: 1px solid var(--lc-border); border-radius: 12px; padding: 14px 12px; text-align: center; }
+.dir-name { font-size: 12px; font-weight: 700; color: var(--lc-purple); margin-bottom: 6px; }
+.dir-desc { font-size: 11px; color: #6d5a84; line-height: 1.5; }
+
+.conclusion { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; background: linear-gradient(#fff, #fbf8ff); border-color: #d9c4ff; }
+.conclusion > div { display: flex; flex-direction: column; gap: 10px; }
+.conclusion p { color: #5e4a77; font-size: 14px; line-height: 1.65; }
+.conclusion b { color: #261043; }
+
+ol { color: #5e4a77; padding-left: 22px; line-height: 1.9; font-size: 14px; }
+footer { text-align: center; border-top: 1px solid var(--lc-border); color: #6d5a84; background: #fff; padding: 32px 24px; font-size: 13px; }
+
+@media (max-width: 850px) {
+  .metrics, .two, .qa-grid, .conclusion, .install-grid, .dirs { grid-template-columns: 1fr; }
+  .hero-content { padding: 60px 20px 80px; }
+  .section { padding: 36px 20px; }
+}
+</style>
 </head>
 <body>
-  <script>
-    window.SUPABASE_URL = "https://dwssbwwmhaanxtjjsbwq.supabase.co";
-    window.SUPABASE_KEY = "sb_publishable_0v8dwO4ZrRUqTsrqxPBSDw_GrWhcA5_";
-  </script>
+<div class="accent-line"></div>
 
-  <div class="app">
-    <aside class="sidebar">
-      <div class="brand">
-        <div class="brand-mark"></div>
-        <div><strong>logcomex</strong><span>Finance Board</span></div>
-      </div>
-      <nav>
-        <a class="active">Atividades</a>
-        <a>Responsáveis</a>
-        <a>Relatórios</a>
-        <a>Configurações</a>
-      </nav>
-      <div class="slack-box">
-        <strong>Slack preparado</strong>
-        <p>Notificar mudança de status e menções quando conectado.</p>
-      </div>
-    </aside>
+<header class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="brand">
+      <span class="brand-mark"></span>
+      <span class="brand-name">logcomex</span>
+    </div>
+    <span class="pill">Proposta de Análise · Financeiro · Logcomex</span>
+    <h1>Implementação CISa<br>Santander para integração<br><span>com NetSuite</span></h1>
+    <p>Análise executiva sobre o uso da CISa/AFT como camada adicional para transmissão CNAB no novo ERP.</p>
+    <small>Financeiro · TI · Santander · Junho 2026</small>
+  </div>
+</header>
 
-    <main class="main">
-      <header class="topbar">
+<!-- MÉTRICAS -->
+<section class="section">
+  <p class="eyebrow">Resumo Executivo</p>
+  <h2>Veredicto da análise</h2>
+  <div class="metrics">
+    <div class="card metric">
+      <strong>Sim</strong>
+      <span>Vale homologar</span>
+      <p>Desde que em paralelo ao processo atual.</p>
+    </div>
+    <div class="card metric">
+      <strong>Não</strong>
+      <span>Migrar direto</span>
+      <p>Produção somente após testes ponta a ponta.</p>
+    </div>
+    <div class="card metric">
+      <strong>Médio</strong>
+      <span>Risco operacional</span>
+      <p>Controlável — fallback via internet banking.</p>
+    </div>
+    <div class="card metric">
+      <strong>Alto</strong>
+      <span>Benefício esperado</span>
+      <p>Automação e compatibilidade com NetSuite.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FLUXO -->
+<section class="section">
+  <p class="eyebrow">Fluxo</p>
+  <h2>Como é hoje vs. como ficaria com CISa</h2>
+  <div class="grid two">
+    <div class="card">
+      <h3>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6415d6" stroke-width="2"><rect width="8" height="8" x="3" y="3" rx="2"/><path d="M7 11v4a2 2 0 0 0 2 2h4"/><rect width="8" height="8" x="13" y="13" rx="2"/></svg>
+        Hoje — OMIE
+      </h3>
+      <ol>
+        <li>Financeiro gera arquivo CNAB no OMIE.</li>
+        <li>Arquivo é transmitido ao Santander pelo fluxo já conhecido.</li>
+        <li>Santander processa e devolve arquivo de retorno (.txt).</li>
+        <li>OMIE lê o retorno e faz baixa automática.</li>
+      </ol>
+    </div>
+    <div class="card highlight">
+      <h3>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6415d6" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+        Proposto — NetSuite + CISa
+      </h3>
+      <ol>
+        <li>NetSuite gera arquivo e salva na pasta OUTBOX (monitorada pela CISa).</li>
+        <li>CISa/AFT transmite automaticamente ao Santander a cada 15 minutos.</li>
+        <li>Santander processa e devolve arquivo de retorno na pasta INBOX.</li>
+        <li>NetSuite lê o arquivo de retorno e realiza a baixa.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARATIVO -->
+<section class="section">
+  <p class="eyebrow">Comparativo</p>
+  <h2>O que muda na prática</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Tema</th><th>Atual</th><th>Com CISa</th><th>Impacto</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>ERP</strong></td><td>OMIE</td><td>NetSuite</td><td>Migração do processo bancário para novo ERP</td></tr>
+        <tr><td><strong>Transmissão</strong></td><td>CNAB tradicional / operação atual</td><td>CISa/AFT Santander</td><td>CISa passa a intermediar envio e retorno automaticamente</td></tr>
+        <tr><td><strong>Arquivo de retorno</strong></td><td>.txt</td><td>.RET (extensão do arquivo de retorno)</td><td>Santander entrega o arquivo de retorno — layout a confirmar com NetSuite</td></tr>
+        <tr><td><strong>Frequência de transmissão</strong></td><td>Manual/sob demanda</td><td>Automático a cada 15 minutos</td><td>Reduz intervenção manual; monitoramento via Agendador de Tarefas</td></tr>
+        <tr><td><strong>Fallback em caso de falha</strong></td><td>–</td><td><span class="badge badge-green">Internet Banking</span></td><td>Se a CISa falhar, arquivos podem ser enviados/baixados pelo internet banking normalmente</td></tr>
+        <tr><td><strong>Custo adicional</strong></td><td>–</td><td><span class="badge badge-green">Sem custo</span></td><td>CISa não tem custo de contratação, implantação ou manutenção</td></tr>
+        <tr><td><strong>Coexistência com OMIE</strong></td><td>–</td><td><span class="badge badge-yellow">A confirmar</span></td><td>Aguardar validação do Santander sobre impacto no fluxo atual</td></tr>
+        <tr><td><strong>Risco de ruptura</strong></td><td>Baixo</td><td><span class="badge badge-green">Baixo</span></td><td>Fallback garantido via internet banking; CISa é meio adicional, não substituto obrigatório</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- PERGUNTAS -->
+<section class="section">
+  <p class="eyebrow">Validações com Santander</p>
+  <h2>Status das perguntas em aberto</h2>
+  <div class="card">
+    <div class="qa-grid">
+
+      <div class="qa-item pending">
+        <div class="qa-icon">⏳</div>
         <div>
-          <div class="eyebrow">Contas a pagar</div>
-          <h1>Atividades Contas a pagar</h1>
-          <p id="connectionStatus" class="status">Conectando ao Supabase...</p>
+          <p class="qa-question">A CISa pode coexistir com o fluxo atual do OMIE sem qualquer impacto?</p>
+          <p class="qa-answer">Aguardando resposta do Santander</p>
         </div>
-        <button class="profile" onclick="openLogin()">
-          <span>KS</span>
-          <div><strong>kamilla@logcomex.com</strong><small>Acesso Logcomex</small></div>
-        </button>
-      </header>
+      </div>
 
-      <section class="filters">
-        <input id="search" placeholder="Buscar atividade, tag ou palavra-chave..." oninput="renderBoard()" />
-        <select id="assigneeFilter" onchange="renderBoard()">
-          <option value="todos">Todos responsáveis</option>
-          <option value="Kamilla">Kamilla</option>
-          <option value="Thai">Thai</option>
-          <option value="Adriano">Adriano</option>
-          <option value="Daniel">Daniel</option>
-        </select>
-        <select id="priorityFilter" onchange="renderBoard()">
-          <option value="todas">Todas urgências</option>
-          <option value="critica">Crítica</option>
-          <option value="alta">Alta</option>
-          <option value="media">Média</option>
-          <option value="baixa">Baixa</option>
-        </select>
-        <select id="dueFilter" onchange="renderBoard()">
-          <option value="todos">Todos vencimentos</option>
-          <option value="com-data">Com vencimento</option>
-          <option value="vencidos">Vencidos</option>
-        </select>
-      </section>
+      <div class="qa-item info">
+        <div class="qa-icon">ℹ</div>
+        <div>
+          <p class="qa-question">O layout do arquivo de retorno será CNAB padrão ou específico para o NetSuite?</p>
+          <p class="qa-answer">".RET" é a extensão do arquivo de retorno, não um formato CNAB específico</p>
+          <p class="qa-note">A ser validado: qual formato exato o NetSuite espera ler do arquivo de retorno.</p>
+        </div>
+      </div>
 
-      <section id="board" class="board"></section>
-    </main>
+      <div class="qa-item ok">
+        <div class="qa-icon">✓</div>
+        <div>
+          <p class="qa-question">Existe custo adicional de contratação, implantação, manutenção ou suporte?</p>
+          <p class="qa-answer">Não — sem custo adicional confirmado pelo Santander</p>
+        </div>
+      </div>
+
+      <div class="qa-item ok">
+        <div class="qa-icon">✓</div>
+        <div>
+          <p class="qa-question">Qual o SLA do Santander para falha de transmissão ou indisponibilidade?</p>
+          <p class="qa-answer">Agendamento a cada 15 minutos (configurável no Agendador de Tarefas do Windows)</p>
+          <p class="qa-note">Frequência parametrizável — não há SLA formal de suporte declarado pelo banco.</p>
+        </div>
+      </div>
+
+      <div class="qa-item ok">
+        <div class="qa-icon">✓</div>
+        <div>
+          <p class="qa-question">Se a CISa falhar, podemos transmitir/baixar arquivos manualmente?</p>
+          <p class="qa-answer">Sim — o internet banking continua disponível normalmente como fallback</p>
+          <p class="qa-note">CISa é um meio adicional de transmissão, não o único. Em caso de falha, o fluxo manual via internet banking segue operando.</p>
+        </div>
+      </div>
+
+      <div class="qa-item ok">
+        <div class="qa-icon">✓</div>
+        <div>
+          <p class="qa-question">As instalações podem ser em notebook? Quais os requisitos?</p>
+          <p class="qa-answer">Sim — manual de instalação recebido (Windows 64 bits, porta 9000, instalação como administrador)</p>
+          <p class="qa-note">Recomendamos servidor dedicado para maior estabilidade, mesmo que notebook seja tecnicamente viável.</p>
+        </div>
+      </div>
+
+    </div>
   </div>
+</section>
 
-  <div id="modal" class="modal hidden">
-    <div class="modal-card">
-      <button class="close" onclick="closeModal()">×</button>
-      <input id="modalTitle" class="modal-title" />
-      <p class="modal-subtitle">Alterações serão salvas no Supabase.</p>
-      <div class="modal-grid">
-        <section>
-          <label>Descrição</label>
-          <textarea id="modalDescription" placeholder="Detalhe a atividade, contexto e próximos passos..."></textarea>
-          <label>Comentários</label>
-          <div id="commentsList"></div>
-          <div class="comment-box">
-            <input id="newComment" placeholder="Escrever comentário ou mencionar @alguem..." />
-            <button onclick="addComment()">Enviar</button>
-          </div>
-        </section>
-        <aside>
-          <label>Responsável</label>
-          <select id="modalAssignee"><option>Kamilla</option><option>Thai</option><option>Adriano</option><option>Daniel</option></select>
-          <label>Urgência</label>
-          <select id="modalPriority"><option value="critica">Crítica</option><option value="alta">Alta</option><option value="media">Média</option><option value="baixa">Baixa</option></select>
-          <label>Vencimento</label>
-          <input id="modalDue" type="date" />
-          <label>Tags</label>
-          <input id="modalTags" />
-          <div class="integration">Quando conectado ao Slack, mudanças de status e menções serão notificadas automaticamente.</div>
-          <button class="save" onclick="saveModal()">Salvar alterações</button>
-        </aside>
+<!-- RISCOS -->
+<section class="section">
+  <p class="eyebrow">Riscos</p>
+  <h2>Principais riscos e mitigação</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Risco</th><th>Impacto operacional</th><th>Nível</th><th>Mitigação</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Máquina indisponível (notebook desligado)</td><td>Arquivos deixam de trafegar automaticamente</td><td><span class="badge badge-yellow">Médio</span></td><td>Preferir servidor ou VM dedicada; fallback via internet banking</td></tr>
+        <tr><td>Serviço ou tarefa agendada travada</td><td>Remessas/retornos ficam presos por até 15 min</td><td><span class="badge badge-yellow">Baixo/Médio</span></td><td>Monitorar logs (aftservice-0-0.log) e Agendador de Tarefas</td></tr>
+        <tr><td>Porta 9000 bloqueada (Firewall)</td><td>CISa não comunica com Santander</td><td><span class="badge badge-orange">Médio/Alto</span></td><td>TI liberar porta 9000 e validar URLs via CMD antes da instalação</td></tr>
+        <tr><td>Layout do arquivo de retorno incompatível</td><td>NetSuite pode rejeitar o arquivo de retorno</td><td><span class="badge badge-orange">Médio/Alto</span></td><td>Validar formato esperado pelo NetSuite com a consultoria antes do go-live</td></tr>
+        <tr><td>Token não ativado corretamente</td><td>CISa não funciona</td><td><span class="badge badge-yellow">Médio</span></td><td>Instalar como administrador; senha: 8+ caracteres, maiúscula, minúscula e especial</td></tr>
+        <tr><td>Homologação incompleta</td><td>Erro em produção</td><td><span class="badge badge-red">Alto</span></td><td>Testar pagamento, cobrança, retorno, rejeição e baixa antes do go-live</td></tr>
+        <tr><td>Sem rollback definido</td><td>Risco de parar pagamento/cobrança</td><td><span class="badge badge-red">Alto</span></td><td>Manter OMIE e internet banking ativos até estabilização completa do NetSuite</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- INSTALAÇÃO -->
+<section class="section">
+  <p class="eyebrow">Requisitos Técnicos</p>
+  <h2>O que a CISa exige para funcionar</h2>
+  <div class="card">
+    <div class="install-grid">
+      <div class="install-card">
+        <h4>🖥️ Requisitos mínimos</h4>
+        <ul>
+          <li>Windows 64 bits (notebook ou servidor)</li>
+          <li>Processador 1 GHz ou superior</li>
+          <li>256 MB de memória livre</li>
+          <li>200 MB de disco + espaço para logs</li>
+          <li><strong>Porta 9000 liberada no firewall</strong></li>
+          <li>Executar instalação como Administrador</li>
+        </ul>
+      </div>
+      <div class="install-card">
+        <h4>🔐 Configurações obrigatórias</h4>
+        <ul>
+          <li>Modo de operação: <strong>Automático</strong></li>
+          <li>Caixa de entrada e saída: código GE (enviado por e-mail pelo Santander)</li>
+          <li>Ativação do Token: usuário + código de ativação</li>
+          <li>Senha: 8+ caracteres, maiúscula, minúscula e especial</li>
+          <li>Tarefa agendada: repetição a cada <strong>15 minutos</strong></li>
+        </ul>
+      </div>
+      <div class="install-card">
+        <h4>🔗 URLs de conexão Santander</h4>
+        <ul>
+          <li>cisa.santander.com.br/cisa/asl/ASLIntegration</li>
+          <li>cisa.santander.com.br/cisa/asl/AFTServlet</li>
+          <li>Testar conectividade via CMD (ping / tracert) antes de instalar</li>
+        </ul>
+      </div>
+      <div class="install-card">
+        <h4>📋 Arquivos de LOG</h4>
+        <ul>
+          <li>aftservice-0-0.log</li>
+          <li>AFTClient_Config.xml</li>
+          <li>Em caso de erro, encaminhar ao Santander com esses arquivos anexos</li>
+          <li>Local: C:\Program Files\Santander ASL Automated File Transfer</li>
+        </ul>
       </div>
     </div>
-  </div>
 
-  <div id="login" class="modal hidden">
-    <div class="login-card">
-      <button class="close" onclick="closeLogin()">×</button>
-      <h2>Login corporativo</h2>
-      <p>Próxima etapa: autenticação real por e-mail @logcomex.com via Supabase Auth.</p>
-      <input value="kamilla@logcomex.com" />
-      <button class="save" onclick="closeLogin()">Entrar no ambiente</button>
+    <p class="eyebrow" style="margin-bottom:12px">Estrutura de diretórios — C:\Santander\AFTData</p>
+    <div class="dirs">
+      <div class="dir-item"><div class="dir-name">📤 OUTBOX</div><div class="dir-desc">Envio dos arquivos remessa para o Santander</div></div>
+      <div class="dir-item"><div class="dir-name">📥 INBOX</div><div class="dir-desc">Recebimento dos arquivos de retorno</div></div>
+      <div class="dir-item"><div class="dir-name">✅ SENTBOX</div><div class="dir-desc">Arquivos já enviados com sucesso</div></div>
+      <div class="dir-item"><div class="dir-name">❌ ERRORBOX</div><div class="dir-desc">Falhas de envio — recolocar no OUTBOX para reenvio</div></div>
+      <div class="dir-item"><div class="dir-name">📋 LOGBOX</div><div class="dir-desc">Logs de todos os arquivos enviados e recebidos</div></div>
     </div>
   </div>
+</section>
 
-  <script src="./script.js"></script>
+<!-- PRÓXIMOS PASSOS -->
+<section class="section">
+  <p class="eyebrow">Próximos Passos</p>
+  <h2>Roteiro de homologação</h2>
+  <div class="card">
+    <div class="steps">
+      <div class="step"><div class="num">1</div><div><h3>Confirmar coexistência com OMIE</h3><p>Única pendência ainda em aberto com o Santander. Não iniciar instalação antes dessa confirmação.</p></div></div>
+      <div class="step"><div class="num">2</div><div><h3>TI liberar porta 9000 e validar conectividade</h3><p>Testar acesso às URLs do Santander via CMD (ping/tracert). Pré-requisito antes de qualquer instalação.</p></div></div>
+      <div class="step"><div class="num">3</div><div><h3>Instalar CISa em máquina Windows 64-bit</h3><p>Executar como Administrador. Configurar modo automático, caixas GE de entrada/saída e ativar Token com senha válida.</p></div></div>
+      <div class="step"><div class="num">4</div><div><h3>Configurar Agendador de Tarefas (15 minutos)</h3><p>Ajustar data de início e repetição. Monitorar logs após primeiro ciclo de execução.</p></div></div>
+      <div class="step"><div class="num">5</div><div><h3>Validar formato do arquivo de retorno com NetSuite</h3><p>Confirmar com a consultoria NetSuite qual formato e extensão são esperados para que a baixa funcione corretamente.</p></div></div>
+      <div class="step"><div class="num">6</div><div><h3>Homologar em paralelo — sem desligar OMIE</h3><p>Testar pagamento, cobrança, retorno, rejeição e baixa ponta a ponta. Fallback via internet banking disponível em caso de falha.</p></div></div>
+      <div class="step"><div class="num">7</div><div><h3>Definir governança e go-live</h3><p>Financeiro opera; TI sustenta a máquina; Santander suporta a conexão. Manter OMIE e internet banking como contingência.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONCLUSÃO -->
+<section class="section">
+  <p class="eyebrow">Conclusão</p>
+  <h2>Leitura executiva para decisão</h2>
+  <div class="card conclusion">
+    <div>
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6415d6" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <p><b>Risco operacional menor do que o esperado.</b><br>A CISa é um meio adicional de transmissão — em caso de falha, o internet banking segue disponível. Não há risco de ruptura total do fluxo de pagamentos.</p>
+    </div>
+    <div>
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6415d6" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      <p><b>Uma pendência e um ponto técnico a resolver.</b><br>Confirmar coexistência com OMIE (Santander) e validar o formato do arquivo de retorno esperado pelo NetSuite (consultoria) antes do go-live.</p>
+    </div>
+    <div>
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6415d6" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+      <p><b>Sem custo e com fallback garantido.</b><br>A implementação é gratuita e o internet banking serve como contingência imediata. Homologar em paralelo com OMIE ativo é a abordagem recomendada.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Logcomex · Financeiro · Análise elaborada pela área de Contas a Pagar · Junho 2026</p>
+</footer>
 </body>
 </html>
